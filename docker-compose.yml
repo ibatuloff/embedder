@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+    api:
+        container_name: embed_worker
+        build:
+            context: .
+            dockerfile: ./app/Dockerfile
+
+        volumes:
+            - ./logs:/var/log/cronlogs
+
+
+
+
