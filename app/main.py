@@ -74,7 +74,7 @@ def update_unprocessed():
                         continue
                     try:
                         logger.info(f"Gennerating embedding for publication ID={id}")
-                        start = time.now()
+                        start = time.time()
                         embedding = generate_embedding(text)
 
                         cur.execute(
@@ -84,7 +84,7 @@ def update_unprocessed():
 
                         conn.commit()
                         processed_count += 1
-                        duration = time.now() - start
+                        duration = time.time() - start
                         logger.info(f"Successfully processed publication ID={id} ({processed_count}/{total_count}) took {duration:.4f} sec")
                     except psycopg2.Error as e:
                         logger.error(f"Aborting! Database error occure while processing publication ID={id}: {e}")
