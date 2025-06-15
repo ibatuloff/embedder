@@ -4,6 +4,7 @@ import logging
 import psycopg2
 from contextlib import contextmanager
 from dotenv import load_dotenv
+import time
 # ~~~~~~~~~~~~~~ logger ~~~~~~~~~~~~~~ #
 
 logging.basicConfig(
@@ -74,7 +75,7 @@ def update_unprocessed():
                         continue
                     try:
                         logger.info(f"Gennerating embedding for publication ID={id}")
-
+                        start = time.now()
                         embedding = generate_embedding(text)
 
                         cur.execute(
@@ -84,7 +85,8 @@ def update_unprocessed():
 
                         conn.commit()
                         processed_count += 1
-                        logger.info(f"Successfully processed publication ID={id} ({processed_count}/{total_count})")
+                        duration = time.now() - start
+                        logger.info(f"Successfully processed publication ID={id} ({processed_count}/{total_count}) took {duration:.4f} sec")
                     except psycopg2.Error as e:
                         logger.error(f"Aborting! Database error occure while processing publication ID={id}: {e}")
                         break
