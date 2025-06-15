@@ -31,7 +31,6 @@ conn_data = {
 
 
 
-
 @contextmanager
 def get_connection():
     conn = None
@@ -100,6 +99,7 @@ def update_unprocessed():
 
 
 if __name__ == "__main__":
+    ollama.pull('nomic-embed-text')
     logger.info(f"Starting worker!")
     update_unprocessed()
 
