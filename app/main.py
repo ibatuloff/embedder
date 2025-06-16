@@ -73,6 +73,7 @@ def update_unprocessed():
                     id, text = row
                     if not text.strip():
                         logger.warning(f"Skipping publication ID={id} with empty text")
+                        total_count -= 1
                         continue
                     try:
                         logger.info(f"Gennerating embedding for publication ID={id}")
