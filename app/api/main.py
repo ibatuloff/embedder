@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 import ollama
 import time
 from pydantic import BaseModel, field_validator
@@ -50,7 +50,7 @@ app = FastAPI(title="Embedding API")
 
 @app.post("/api/embed")
 @limiter.limit("3/minute")
-def get_embed(query: Query) -> dict[str, list[float]]:
+def get_embed(request: Request, query: Query) -> dict[str, list[float]]:
     try:
         start = time.time()
         response = ollama_client.embed(
@@ -70,5 +70,5 @@ def get_embed(query: Query) -> dict[str, list[float]]:
 
 @app.get("/api/ping")
 @limiter.limit("20/minute")
-def ping() -> str:
+def ping(request: Request) -> str:
     return "pong!"
