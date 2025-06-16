@@ -8,4 +8,4 @@ services:
         volumes:
             - ./logs:/var/log/cronlogs
 
-
+        network_mode: "host"
