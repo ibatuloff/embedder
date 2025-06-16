@@ -1,2 +1,2 @@
-*/10 * * * * root cd /app && /usr/local/bin/python /app/main.py >> /var/log/cronlogs/cron.log 2>&1
+* * * * * root cd /app && /usr/local/bin/python /app/main.py >> /var/log/cronlogs/cron.log 2>&1
 # empty;

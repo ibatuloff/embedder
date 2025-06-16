@@ -8,15 +8,4 @@ services:
         volumes:
             - ./logs:/var/log/cronlogs
 
-        depends_on:
-            - ollama
-
-    ollama:
-        image: ollama/ollama
-        ports:
-            - 11434:11434
-
-
-
-
 

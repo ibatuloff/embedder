@@ -11,7 +11,7 @@ logging.basicConfig(
     handlers=[
         logging.StreamHandler() 
     ],
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(name)s - %(levelname)s - %(message)s"
 )
 
@@ -19,6 +19,9 @@ logger = logging.getLogger()
 
 # ~~~~~~~~~~~~~~ embedding generation ~~~~~~~~~~~~~~ #
 load_dotenv()
+ollama_host = os.getenv("OLLAMA_HOST")
+logger.debug(f"ollama host {ollama_host}")
+ollama_client = ollama.Client(host=ollama_host)
 conn_data = {
     'host': os.getenv('HOST1'),
     'port': os.getenv('DB_PORT'),
@@ -48,7 +51,7 @@ def get_connection():
 
 def generate_embedding(text):
     try:
-        response = ollama.embed(
+        response = ollama_client.embed(
             model="nomic-embed-text",
             input=text
         )
@@ -99,7 +102,7 @@ def update_unprocessed():
 
 
 if __name__ == "__main__":
-    ollama.pull('nomic-embed-text')
+    ollama_client.pull('nomic-embed-text')
     logger.info(f"Starting worker!")
     update_unprocessed()
 
