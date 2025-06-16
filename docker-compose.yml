@@ -1,11 +1,26 @@
 services:
     worker:
-        container_name: embed_worker
+        container_name: embed-worker
         build:
             context: .
-            dockerfile: ./app/Dockerfile
-
+            dockerfile: ./app/worker/Dockerfile
         volumes:
             - ./logs:/var/log/cronlogs
 
-        network_mode: "host"
+
+    api:
+        container_name: embed-api
+        build:
+            context: .
+            dockerfile: ./app/api/Dockerfile
+        command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8888"
+        volumes:
+            - ./logs:/app/logs
+
+        
+    nginx:
+        build: nginx
+        ports: 
+            - 80:80
+        depends_on:
+            - api

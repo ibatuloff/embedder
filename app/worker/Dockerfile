@@ -11,14 +11,13 @@ RUN apt-get update && apt-get install -y wget && \
     chmod 0655 ./certificate/RootCA.pem
 
 COPY .env .
-COPY reqs.txt .
+COPY reqs.worker.txt reqs.txt
 RUN pip install -r reqs.txt
 
 COPY crontask /etc/cron.d/crontask
 RUN chmod 0644 /etc/cron.d/crontask && crontab /etc/cron.d/crontask
 RUN mkdir -p /var/log/cronlogs
 
-COPY app/main.py .
-
+COPY app/worker/main.py .
 
 CMD cron -f

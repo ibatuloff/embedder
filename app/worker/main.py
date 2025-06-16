@@ -20,6 +20,7 @@ logger = logging.getLogger()
 # ~~~~~~~~~~~~~~ embedding generation ~~~~~~~~~~~~~~ #
 load_dotenv()
 
+ollama_client = ollama.Client(host=os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434"))
 
 conn_data = {
     'host': os.getenv('HOST1'),
@@ -50,7 +51,7 @@ def get_connection():
 
 def generate_embedding(text):
     try:
-        response = ollama.embed(
+        response = ollama_client.embed(
             model="nomic-embed-text",
             input=text
         )
