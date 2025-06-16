@@ -4,7 +4,11 @@ import time
 from pydantic import BaseModel, field_validator
 from dotenv import load_dotenv
 import os
+from slowapi.util import get_remote_address
+from slowapi import Limiter
 
+
+limiter = Limiter(key_func=get_remote_address)
 
 load_dotenv()
 
@@ -45,6 +49,7 @@ class Query(BaseModel):
 app = FastAPI(title="Embedding API")
 
 @app.post("/api/embed")
+@limiter.limit("3/minute")
 def get_embed(query: Query) -> dict[str, list[float]]:
     try:
         start = time.time()
@@ -64,5 +69,6 @@ def get_embed(query: Query) -> dict[str, list[float]]:
     
 
 @app.get("/api/ping")
+@limiter.limit("20/minute")
 def ping() -> str:
     return "pong!"
